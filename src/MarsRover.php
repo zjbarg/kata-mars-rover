@@ -21,7 +21,7 @@ final class MarsRover
                 ?? throw new \Exception(sprintf('Bad command at character %d, expected "M", "L", or "R", got [%s]', $index + 1, $command));
 
             if ($this->grid->hasObstacleAt($next->position)) {
-                return sprintf('O:%s', $this->state->toString());
+                return \sprintf('O:%s', $this->state->toString());
             }
 
             $this->state = $next;

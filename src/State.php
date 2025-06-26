@@ -45,7 +45,7 @@ final readonly class State
 
     public function toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s:%s',
             $this->position->toString(),
             $this->orientation->toString(),
