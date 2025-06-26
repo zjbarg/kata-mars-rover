@@ -43,10 +43,11 @@ final readonly class State
         );
     }
 
-    public function toString(): string
+    public function toString(string $prefix = ''): string
     {
         return \sprintf(
-            '%s:%s',
+            '%s%s:%s',
+            $prefix,
             $this->position->toString(),
             $this->orientation->toString(),
         );

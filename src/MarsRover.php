@@ -16,12 +16,13 @@ final class MarsRover
 
     public function execute(string $commands): string
     {
+        $this->validateCommandString($commands);
+
         foreach (str_split($commands) as $index => $command) {
-            $next = $this->getNextState($command)
-                ?? throw new \Exception(sprintf('Bad command at character %d, expected "M", "L", or "R", got [%s]', $index + 1, $command));
+            $next = $this->getNextState($command);
 
             if ($this->grid->hasObstacleAt($next->position)) {
-                return \sprintf('O:%s', $this->state->toString());
+                return $this->state->toString(prefix: 'O:');
             }
 
             $this->state = $next;
@@ -30,13 +31,19 @@ final class MarsRover
         return $this->state->toString();
     }
 
-    private function getNextState(string $command): ?State
+    private function validateCommandString(string $commands): void
+    {
+        if (1 !== \preg_match('/^[MLR]+$|^$/', $commands)) {
+            throw new \Exception('Bad input');
+        }
+    }
+
+    private function getNextState(string $command): State
     {
         return match ($command) {
             'M' => $this->state->forward()->wrap($this->grid->width, $this->grid->height),
             'L' => $this->state->left(),
             'R' => $this->state->right(),
-            default => null,
         };
     }
 }
