@@ -16,7 +16,7 @@ final class MarsRover
 
     public function execute(string $commands): string
     {
-        $this->validateCommandString($commands);
+        $this->failOnInvalidCommandString($commands);
 
         foreach (str_split($commands) as $index => $command) {
             $next = $this->getNextState($command);
@@ -31,7 +31,7 @@ final class MarsRover
         return $this->state->toString();
     }
 
-    private function validateCommandString(string $commands): void
+    private function failOnInvalidCommandString(string $commands): void
     {
         if (1 !== \preg_match('/^[MLR]+$|^$/', $commands)) {
             throw new \Exception('Bad input');
