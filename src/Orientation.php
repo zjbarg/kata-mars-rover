@@ -13,12 +13,22 @@ enum Orientation: int
 
     public function right(): static
     {
-        return static::from(($this->value + 1) % 4);
+        return match ($this) {
+            static::North => static::East,
+            static::East => static::South,
+            static::South => static::West,
+            static::West => static::North,
+        };
     }
 
     public function left(): static
     {
-        return static::from(($this->value - 1) % 4);
+        return match ($this) {
+            static::North => static::West,
+            static::East => static::North,
+            static::South => static::East,
+            static::West => static::South,
+        };
     }
 
     public function toString(): string
