@@ -18,29 +18,29 @@ final class MarsRoverTest extends TestCase
     #[TestWith(['0:2:N', 'MM'], 'moves up')]
     #[TestWith(['2:3:N', 'MMRMMLM'])]
     #[TestWith(['0:0:N', 'MMMMMMMMMM'], 'wraps around')]
-    public function commandWithoutObstacles(string $expected_state, string $command): void
+    public function commandWithoutObstacles(string $expectedState, string $command): void
     {
         $rover = new MarsRover(
             Grid::square(10),
         );
 
-        $this->assertEquals($expected_state, $rover->execute($command));
+        $this->assertEquals($expectedState, $rover->execute($command));
     }
 
     #[Test]
     #[TestWith(['O:0:2:N', 'MMMM'])]
-    public function commandWithObstacles(string $expected_state, string $command): void
+    public function commandWithObstacles(string $expectedState, string $command): void
     {
         $rover = new MarsRover(
             Grid::square(10)->withObstacles(new Point(0, 3))
         );
 
-        $this->assertEquals($expected_state, $rover->execute($command));
+        $this->assertEquals($expectedState, $rover->execute($command));
     }
 
     #[Test]
     #[TestWith(['MMD'])]
-    public function failsOnInvalidCommand(string $bad_command): void
+    public function failsOnInvalidCommand(string $badCommand): void
     {
         $rover = new MarsRover(
             Grid::square(10),
@@ -48,6 +48,6 @@ final class MarsRoverTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        $rover->execute($bad_command);
+        $rover->execute($badCommand);
     }
 }
