@@ -17,12 +17,8 @@ final class MarsRover
     public function execute(string $commands): string
     {
         foreach (str_split($commands) as $index => $command) {
-            $next = match ($command) {
-                'M' => $this->state->forward()->wrap($this->grid->width, $this->grid->height),
-                'R' => $this->state->right(),
-                'L' => $this->state->left(),
-                default => throw new \Exception(sprintf('Bad command at index %d, %s given', $index, $command)),
-            };
+            $next = $this->getNextState($command)
+                ?? throw new \Exception(sprintf('Bad command at character %d, expected "M", "L", or "R", got [%s]', $index + 1, $command));
 
             if ($this->grid->hasObstacleAt($next->position)) {
                 return sprintf('O:%s', $this->state->toString());
@@ -32,5 +28,15 @@ final class MarsRover
         }
 
         return $this->state->toString();
+    }
+
+    private function getNextState(string $command): ?State
+    {
+        return match ($command) {
+            'M' => $this->state->forward()->wrap($this->grid->width, $this->grid->height),
+            'L' => $this->state->left(),
+            'R' => $this->state->right(),
+            default => null,
+        };
     }
 }
