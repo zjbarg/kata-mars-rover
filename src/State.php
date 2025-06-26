@@ -12,11 +12,6 @@ final readonly class State
     ) {
     }
 
-    public static function initial(): static
-    {
-        return new static(Point::origin(), Orientation::North);
-    }
-
     public function right(): static
     {
         return new static($this->position, $this->orientation->right());

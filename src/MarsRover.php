@@ -11,7 +11,10 @@ final class MarsRover
     public function __construct(
         private readonly Grid $grid,
     ) {
-        $this->state = State::initial();
+        $this->state = new State(
+            Point::origin(),
+            Orientation::North,
+        );
     }
 
     public function execute(string $commands): string
