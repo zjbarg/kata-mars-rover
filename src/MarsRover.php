@@ -18,7 +18,7 @@ final class MarsRover
     {
         $this->failOnInvalidCommandString($commands);
 
-        foreach (str_split($commands) as $command) {
+        foreach (\str_split($commands) as $command) {
             $next = $this->getNextState($command);
 
             if ($this->grid->hasObstacleAt($next->position)) {
