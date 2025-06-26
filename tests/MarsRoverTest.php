@@ -37,4 +37,17 @@ final class MarsRoverTest extends TestCase
 
         $this->assertEquals($expected_state, $rover->execute($command));
     }
+
+    #[Test]
+    #[TestWith(['MMD'])]
+    public function failsOnInvalidCommand(string $bad_command): void
+    {
+        $rover = new MarsRover(
+            Grid::square(10),
+        );
+
+        $this->expectException(\Exception::class);
+
+        $rover->execute($bad_command);
+    }
 }
