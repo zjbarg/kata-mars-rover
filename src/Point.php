@@ -17,11 +17,6 @@ final readonly class Point
         return new static(0, 0);
     }
 
-    public function equals(self $other): bool
-    {
-        return $this == $other;
-    }
-
     public function forward(Orientation $orientation): static
     {
         [$x, $y] = match ($orientation) {

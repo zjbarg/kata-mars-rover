@@ -33,7 +33,7 @@ final readonly class Grid
     {
         return \array_any(
             $this->obstacles,
-            fn (Point $obstacle) => $obstacle->equals($position),
+            fn (Point $obstacle) => $obstacle == $position,
         );
     }
 }
