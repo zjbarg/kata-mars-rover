@@ -18,6 +18,7 @@ final class MarsRoverTest extends TestCase
     #[TestWith(['0:2:N', 'MM'], 'moves up')]
     #[TestWith(['2:3:N', 'MMRMMLM'])]
     #[TestWith(['0:0:N', 'MMMMMMMMMM'], 'wraps around')]
+    #[TestWith(['0:7:S', 'RRMMM'], 'turn south and move, should wrap')]
     public function commandWithoutObstacles(string $expectedState, string $command): void
     {
         $rover = new MarsRover(

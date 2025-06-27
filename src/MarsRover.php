@@ -6,47 +6,51 @@ namespace Zjbarg\Kata\MarsRover;
 
 final class MarsRover
 {
-    private State $state;
+    private readonly Grid $grid;
+    private Point $position;
+    private Orientation $orientation;
 
-    public function __construct(
-        private readonly Grid $grid,
-    ) {
-        $this->state = new State(
-            Point::origin(),
-            Orientation::North,
-        );
+    public function __construct(Grid $grid)
+    {
+        $this->grid = $grid;
+        $this->position = Point::origin();
+        $this->orientation = Orientation::North;
     }
 
     public function execute(string $commands): string
     {
-        $this->failOnInvalidCommandString($commands);
+        foreach (\str_split($commands) as $index => $command) {
+            switch ($command) {
+                case 'L':
+                    $this->orientation = $this->orientation->turnLeft();
+                    break;
+                case 'R':
+                    $this->orientation = $this->orientation->turnRight();
+                    break;
+                case 'M':
+                    $nextPosition = $this->grid->getPositionNextTo($this->position, $this->orientation);
 
-        foreach (\str_split($commands) as $command) {
-            $next = $this->getNextState($command);
+                    if ($this->grid->hasObstacleAt($nextPosition)) {
+                        return $this->toString(prefix: 'O:');
+                    }
 
-            if ($this->grid->hasObstacleAt($next->position)) {
-                return $this->state->toString(prefix: 'O:');
+                    $this->position = $nextPosition;
+                    break;
+                default:
+                    throw new \Exception(sprintf('Invalid command at %d, expected M, L, or R, given [%s]', $index, $command));
             }
-
-            $this->state = $next;
         }
 
-        return $this->state->toString();
+        return $this->toString();
     }
 
-    private function failOnInvalidCommandString(string $commands): void
+    public function toString(string $prefix = ''): string
     {
-        if (1 !== \preg_match('/^[MLR]+$|^$/', $commands)) {
-            throw new \Exception('Bad input');
-        }
-    }
-
-    private function getNextState(string $command): State
-    {
-        return match ($command) {
-            'M' => $this->state->forward()->wrap($this->grid->width, $this->grid->height),
-            'L' => $this->state->left(),
-            'R' => $this->state->right(),
-        };
+        return \sprintf(
+            '%s%s:%s',
+            $prefix,
+            $this->position->toString(),
+            $this->orientation->toString(),
+        );
     }
 }

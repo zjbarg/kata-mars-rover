@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Zjbarg\Kata\MarsRover;
 
-enum Orientation: int
+enum Orientation
 {
-    case North = 0;
-    case East = 1;
-    case South = 2;
-    case West = 3;
+    case North;
+    case East;
+    case South;
+    case West;
 
-    public function right(): static
+    public function turnRight(): static
     {
         return match ($this) {
             static::North => static::East,
@@ -21,7 +21,7 @@ enum Orientation: int
         };
     }
 
-    public function left(): static
+    public function turnLeft(): static
     {
         return match ($this) {
             static::North => static::West,

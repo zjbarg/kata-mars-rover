@@ -17,29 +17,6 @@ final readonly class Point
         return new static(0, 0);
     }
 
-    public function forward(Orientation $orientation): static
-    {
-        [$x, $y] = match ($orientation) {
-            Orientation::North => [0, 1],
-            Orientation::East => [1, 0],
-            Orientation::South => [0, -1],
-            Orientation::West => [-1, 0],
-        };
-
-        return new static(
-            $this->x + $x,
-            $this->y + $y,
-        );
-    }
-
-    public function wrap(int $x, int $y): static
-    {
-        return new static(
-            $this->x % $x,
-            $this->y % $y,
-        );
-    }
-
     public function toString(): string
     {
         return \sprintf('%d:%d', $this->x, $this->y);
