@@ -13,38 +13,41 @@ final class MarsRover
     public function __construct(Grid $grid)
     {
         $this->grid = $grid;
-        $this->position = Point::origin();
+        $this->position = new Point(0, 0);
         $this->orientation = Orientation::North;
     }
 
     public function execute(string $commands): string
     {
         foreach (\str_split($commands) as $index => $command) {
-            switch ($command) {
-                case 'L':
-                    $this->orientation = $this->orientation->turnLeft();
-                    break;
-                case 'R':
-                    $this->orientation = $this->orientation->turnRight();
-                    break;
-                case 'M':
-                    $nextPosition = $this->grid->getPositionNextTo($this->position, $this->orientation);
-
-                    if ($this->grid->hasObstacleAt($nextPosition)) {
-                        return $this->toString(prefix: 'O:');
-                    }
-
-                    $this->position = $nextPosition;
-                    break;
-                default:
-                    throw new \Exception(sprintf('Invalid command at %d, expected M, L, or R, given [%s]', $index, $command));
+            if ('L' === $command) {
+                $this->orientation = $this->orientation->turnLeft();
+                continue;
             }
+
+            if ('R' === $command) {
+                $this->orientation = $this->orientation->turnRight();
+                continue;
+            }
+
+            if ('M' === $command) {
+                $nextPosition = $this->grid->getPositionNextTo($this->position, $this->orientation);
+
+                if ($this->grid->hasObstacleAt($nextPosition)) {
+                    return $this->toString(prefix: 'O:');
+                }
+
+                $this->position = $nextPosition;
+                continue;
+            }
+
+            throw new \Exception(sprintf('Invalid command at %d, expected M, L, or R, given [%s]', $index, $command));
         }
 
         return $this->toString();
     }
 
-    public function toString(string $prefix = ''): string
+    private function toString(string $prefix = ''): string
     {
         return \sprintf(
             '%s%s:%s',

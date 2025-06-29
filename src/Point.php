@@ -12,11 +12,6 @@ final readonly class Point
     ) {
     }
 
-    public static function origin(): static
-    {
-        return new static(0, 0);
-    }
-
     public function toString(): string
     {
         return \sprintf('%d:%d', $this->x, $this->y);
